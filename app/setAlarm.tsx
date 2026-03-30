@@ -1,4 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as Notifications from "expo-notifications";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -15,26 +16,47 @@ import { getAlarms, saveAlarms } from "../utils/storage";
 export default function SetAlarmScreen() {
   const router = useRouter();
 
-  // State Management
   const [date, setDate] = useState(new Date());
   const [label, setLabel] = useState("Alarm");
 
-  // Task Configuration State
   const [taskType, setTaskType] = useState("math");
   const [taskCount, setTaskCount] = useState("3");
 
   const handleSave = async () => {
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    const timeString = `${hours}:${minutes}`;
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const timeString = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
 
-    // Ensure count is a valid integer
     const parsedCount = parseInt(taskCount, 10);
     const finalCount = isNaN(parsedCount) || parsedCount < 1 ? 1 : parsedCount;
 
-    // Construct the alarm object dynamically
+    const alarmId = Date.now().toString();
+
+    let triggerDate = new Date();
+    triggerDate.setHours(hours, minutes, 0, 0);
+
+    if (triggerDate <= new Date()) {
+      triggerDate.setDate(triggerDate.getDate() + 1);
+    }
+
+    await Notifications.scheduleNotificationAsync({
+      identifier: alarmId,
+      content: {
+        title: `${label} from Alarm hard mode`,
+        body: `Time for your ${taskType} mission!`,
+        sound: true,
+        priority: Notifications.AndroidNotificationPriority.MAX,
+        interruptionLevel: "timeSensitive",
+        data: { alarmId: alarmId },
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        date,
+      },
+    });
+
     const newAlarm = {
-      id: Date.now().toString(),
+      id: alarmId,
       time: timeString,
       label: label,
       isActive: true,

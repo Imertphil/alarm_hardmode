@@ -1,9 +1,8 @@
-// utils/storage.js
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type TaskType = "math" | "vocab";
 
-export type Alarm = {
+export interface Alarm {
   id: string;
   time: string;
   label: string;
@@ -12,7 +11,7 @@ export type Alarm = {
     type: TaskType;
     count: number;
   };
-};
+}
 
 const ALARMS_KEY = "@alarms_data";
 
