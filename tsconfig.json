@@ -20,6 +20,6 @@
 
     "nativewind-env.d.ts",
     "app/(tabs)/alarms.tsx",
-    "app/set-alarm.jsx"
+    "app/set-alarm.tsx"
   ]
 }

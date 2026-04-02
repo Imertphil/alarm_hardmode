@@ -65,11 +65,11 @@ const _Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="tasks"
+        name="settings"
         options={{
-          title: "Tasks",
+          title: "Settings",
           headerShown: false,
-          tabBarButton: TabButton("Tasks"),
+          tabBarButton: TabButton("Settings"),
         }}
       />
     </Tabs>

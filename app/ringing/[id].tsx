@@ -1,4 +1,5 @@
 import MathTask from "@/components/MathTask";
+import VocabTask from "@/components/VocabTask";
 import { Alarm, getAlarms } from "@/utils/storage";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -67,12 +68,10 @@ export default function RingingScreen() {
             onComplete={handleFullyAwake}
           />
         ) : (
-          <View style={styles.container}>
-            <Text style={styles.errorText}>Vocab task coming soon...</Text>
-            <TouchableOpacity style={styles.button} onPress={handleFullyAwake}>
-              <Text style={styles.buttonText}>Dismiss</Text>
-            </TouchableOpacity>
-          </View>
+          <VocabTask
+            requiredCount={currentAlarm.task.count}
+            onComplete={handleFullyAwake}
+          />
         )}
       </View>
     );

@@ -7,7 +7,6 @@ import "./globals.css";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
     shouldShowBanner: true,
@@ -44,6 +43,9 @@ export default function RootLayout() {
         }
       },
     );
+    return () => {
+      subscription.remove();
+    };
   }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -53,6 +55,7 @@ export default function RootLayout() {
           name="setAlarm"
           options={{ presentation: "modal", headerShown: false }}
         />
+        <Stack.Screen name="ringing/[id]" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );
